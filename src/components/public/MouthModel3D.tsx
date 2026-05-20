@@ -215,7 +215,7 @@ export function MouthModel3D() {
   }, [])
 
   return (
-    <div className="w-full h-full min-h-[400px] flex items-center justify-center relative">
+    <div className="w-full h-full min-h-[400px] md:min-h-0 flex items-center justify-center relative min-w-0 overflow-hidden">
       {/* O Canvas preenche toda a div para evitar cortes do modelo/sombra */}
       <Canvas
         camera={{ position: [0, 0, 4.5], fov: 40 }}
@@ -264,16 +264,12 @@ export function MouthModel3D() {
         </React.Suspense>
       </Canvas>
 
-      {/* Zona de interação centralizada e transparente (apenas próximo ao elemento 3D) */}
       <div
         ref={containerRef}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         className="absolute w-[360px] h-[360px] rounded-full cursor-grab active:cursor-grabbing z-20"
       />
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none text-[10px] uppercase tracking-[0.2em] text-gold/80 bg-dark/50 px-4 py-2 rounded-full backdrop-blur-sm z-10 font-sans">
-        Arraste para girar • Passe o mouse para separar
-      </div>
     </div>
   )
 }

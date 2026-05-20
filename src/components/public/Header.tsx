@@ -18,7 +18,7 @@ export function Header({ onAdminClick }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40)
+    const handler = () => setScrolled(window.scrollY > 120)
     window.addEventListener('scroll', handler)
     return () => window.removeEventListener('scroll', handler)
   }, [])
@@ -29,10 +29,14 @@ export function Header({ onAdminClick }: HeaderProps) {
     el?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const isVisible = scrolled || menuOpen
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'py-4 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gold/10' : 'py-6 bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out transform ${
+        isVisible
+          ? 'translate-y-0 opacity-100 py-4 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gold/10 pointer-events-auto'
+          : '-translate-y-full opacity-0 pointer-events-none py-6 bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
