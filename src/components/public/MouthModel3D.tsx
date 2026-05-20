@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useEffect, Component, ReactNode } from 'react'
 // @ts-ignore
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Environment, ContactShadows, Float, Html, useProgress, useGLTF } from '@react-three/drei'
+import { OrbitControls, Environment, ContactShadows, Float, Html, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
 // Definição de tipos estritos para o resultado do useGLTF

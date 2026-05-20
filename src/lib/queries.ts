@@ -45,7 +45,7 @@ export const appointmentQueries = {
   create: (data: Omit<Appointment, 'id' | 'created_at'>) =>
     supabase.from('appointments').insert(data).select().single(),
 
-  update: (id: string, data: Partial<Appointment>) =>
+  update: (id: string, data: Partial<Omit<Appointment, 'id' | 'created_at'>>) =>
     supabase.from('appointments').update(data).eq('id', id).select().single(),
 
   remove: (id: string) =>
@@ -68,7 +68,7 @@ export const patientQueries = {
   create: (data: Omit<Patient, 'id' | 'created_at'>) =>
     supabase.from('patients').insert(data).select().single(),
 
-  update: (id: string, data: Partial<Patient>) =>
+  update: (id: string, data: Partial<Omit<Patient, 'id' | 'created_at'>>) =>
     supabase.from('patients').update(data).eq('id', id).select().single(),
 
   remove: (id: string) =>
@@ -91,7 +91,7 @@ export const serviceQueries = {
   create: (data: Omit<Service, 'id' | 'created_at'>) =>
     supabase.from('services').insert(data).select().single(),
 
-  update: (id: string, data: Partial<Service>) =>
+  update: (id: string, data: Partial<Omit<Service, 'id' | 'created_at'>>) =>
     supabase.from('services').update(data).eq('id', id).select().single(),
 
   remove: (id: string) =>
@@ -114,7 +114,7 @@ export const beforeAfterQueries = {
   create: (data: Omit<BeforeAfter, 'id' | 'created_at'>) =>
     supabase.from('before_after').insert(data).select().single(),
 
-  update: (id: string, data: Partial<BeforeAfter>) =>
+  update: (id: string, data: Partial<Omit<BeforeAfter, 'id' | 'created_at'>>) =>
     supabase.from('before_after').update(data).eq('id', id).select().single(),
 
   remove: (id: string) =>
@@ -179,7 +179,7 @@ export const settingsQueries = {
   get: () =>
     supabase.from('clinic_settings').select('*').single(),
 
-  update: (id: string, data: Partial<ClinicSettings>) =>
+  update: (id: string, data: Partial<Omit<ClinicSettings, 'id'>>) =>
     supabase
       .from('clinic_settings')
       .update({ ...data, updated_at: new Date().toISOString() })

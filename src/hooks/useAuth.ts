@@ -12,7 +12,7 @@ export function useAuth() {
       setLoading(false)
     })
 
-    const { data: listener } = authQueries.onAuthStateChange((_event, s) => {
+    const { data: listener } = authQueries.onAuthStateChange(async (_event, s) => {
       setSession(s)
     })
 

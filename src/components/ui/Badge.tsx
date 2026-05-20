@@ -16,7 +16,6 @@ const config: Record<BadgeProps['status'], string> = {
 
 const labels: Record<BadgeProps['status'], string> = {
   confirmado: 'Confirmado',
-  aprovado:   'Aprovado',
   approved:   'Aprovado',
   active:     'Ativo',
   aguardando: 'Aguardando',

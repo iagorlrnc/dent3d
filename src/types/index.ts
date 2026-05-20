@@ -1,6 +1,6 @@
 // ─── Database row types (mirror Supabase tables) ─────────────────────────────
 
-export interface Appointment {
+export type Appointment = {
   id: string
   patient_name: string
   phone: string
@@ -14,7 +14,7 @@ export interface Appointment {
   created_at: string
 }
 
-export interface Patient {
+export type Patient = {
   id: string
   name: string
   phone: string
@@ -24,7 +24,7 @@ export interface Patient {
   created_at: string
 }
 
-export interface Service {
+export type Service = {
   id: string
   name: string
   description: string
@@ -36,7 +36,7 @@ export interface Service {
   created_at: string
 }
 
-export interface BeforeAfter {
+export type BeforeAfter = {
   id: string
   title: string
   category: string
@@ -47,7 +47,7 @@ export interface BeforeAfter {
   created_at: string
 }
 
-export interface Testimonial {
+export type Testimonial = {
   id: string
   patient_name: string
   rating: number
@@ -56,7 +56,7 @@ export interface Testimonial {
   created_at: string
 }
 
-export interface ContactMessage {
+export type ContactMessage = {
   id: string
   name: string
   phone: string
@@ -67,7 +67,7 @@ export interface ContactMessage {
   created_at: string
 }
 
-export interface ClinicSettings {
+export type ClinicSettings = {
   id: string
   clinic_name: string
   cro: string
@@ -81,7 +81,7 @@ export interface ClinicSettings {
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 
-export interface AdminUser {
+export type AdminUser = {
   id: string
   email: string
 }
@@ -91,12 +91,12 @@ export interface AdminUser {
 export type AppointmentStatus = Appointment['status']
 export type TestimonialStatus = Testimonial['status']
 
-export interface NavItem {
+export type NavItem = {
   label: string
   href: string
 }
 
-export interface AdminNavItem {
+export type AdminNavItem = {
   id: string
   label: string
   icon: string
