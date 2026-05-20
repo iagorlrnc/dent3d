@@ -18,7 +18,7 @@ export function Header({ onAdminClick }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 120)
+    const handler = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handler)
     return () => window.removeEventListener('scroll', handler)
   }, [])
@@ -29,19 +29,15 @@ export function Header({ onAdminClick }: HeaderProps) {
     el?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const isVisible = scrolled || menuOpen
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out transform ${
-        isVisible
-          ? 'translate-y-0 opacity-100 py-4 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gold/10 pointer-events-auto'
-          : '-translate-y-full opacity-0 pointer-events-none py-6 bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300">
+      <div className={`mx-auto px-6 md:px-8 flex items-center justify-between transition-all duration-500 ${
+        scrolled 
+          ? 'max-w-5xl bg-white/60 border border-white/80 shadow-[0_10px_30px_rgba(74,123,111,0.06)] rounded-full py-3.5 backdrop-blur-lg'
+          : 'max-w-7xl bg-transparent border-transparent py-4'
+      }`}>
         {/* Logo */}
-        <div className="font-display text-2xl font-light text-dark tracking-wide">
+        <div className="font-display text-xl md:text-2xl font-light text-dark tracking-wide">
           Sorrir<span className="text-gold">.</span>Clinic
         </div>
 
@@ -51,7 +47,7 @@ export function Header({ onAdminClick }: HeaderProps) {
             <button
               key={link.href}
               onClick={() => handleNav(link.href)}
-              className="text-[11px] tracking-[0.14em] uppercase text-stone-muted hover:text-gold transition-colors font-sans"
+              className="text-[10px] tracking-[0.15em] uppercase text-stone-muted hover:text-teal-clinic font-semibold transition-colors font-sans"
             >
               {link.label}
             </button>
@@ -61,7 +57,7 @@ export function Header({ onAdminClick }: HeaderProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={onAdminClick}
-            className="hidden md:block bg-dark text-cream px-5 py-2.5 text-[11px] tracking-[0.14em] uppercase rounded-sm hover:bg-gold hover:text-dark transition-all font-sans"
+            className="hidden md:block bg-teal-clinic hover:bg-dark text-cream px-6 py-2.5 rounded-full text-[10px] tracking-[0.15em] uppercase font-semibold transition-all duration-300 font-sans shadow-sm"
           >
             Área Admin
           </button>
@@ -76,19 +72,19 @@ export function Header({ onAdminClick }: HeaderProps) {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-cream border-t border-ivory px-6 py-5 flex flex-col gap-4 animate-fade-in">
+        <div className="md:hidden bg-cream/95 backdrop-blur-lg border border-white/60 px-6 py-6 flex flex-col gap-4 mt-2 mx-4 rounded-3xl shadow-lg">
           {navLinks.map(link => (
             <button
               key={link.href}
               onClick={() => handleNav(link.href)}
-              className="text-left text-sm tracking-widest uppercase text-stone-muted hover:text-gold transition-colors"
+              className="text-left text-xs tracking-widest uppercase text-stone-muted hover:text-teal-clinic transition-colors font-semibold"
             >
               {link.label}
             </button>
           ))}
           <button
             onClick={() => { setMenuOpen(false); onAdminClick() }}
-            className="bg-dark text-cream px-5 py-3 text-[11px] tracking-[0.14em] uppercase rounded-sm"
+            className="bg-teal-clinic text-cream px-5 py-3 text-[10px] tracking-[0.15em] uppercase rounded-full font-semibold mt-2 text-center"
           >
             Área Admin
           </button>

@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { contactQueries, settingsQueries } from '@/lib/queries'
-import { useEffect } from 'react'
 import type { ClinicSettings } from '@/types'
 import { Input, Select, Textarea } from '@/components/ui/Input'
+import { MapPin, Phone, Clock, Mail } from 'lucide-react'
 
 const SERVICE_OPTIONS = [
   { value: '', label: 'Selecione um serviço' },
@@ -59,50 +59,61 @@ export function Contact({ onSuccess, onError }: ContactProps) {
   }
 
   const infoItems = [
-    { icon: '📍', title: 'Endereço',              text: settings.address ?? '' },
-    { icon: '📞', title: 'Telefone & WhatsApp',   text: `${settings.phone} / ${settings.whatsapp}` },
-    { icon: '🕐', title: 'Horário de Atendimento', text: settings.hours ?? '' },
-    { icon: '✉️', title: 'E-mail',                 text: settings.email ?? '' },
+    { icon: <MapPin className="w-5 h-5 text-teal-clinic" />, title: 'Endereço',              text: settings.address ?? '' },
+    { icon: <Phone className="w-5 h-5 text-teal-clinic" />,  title: 'Telefone & WhatsApp',   text: `${settings.phone} / ${settings.whatsapp}` },
+    { icon: <Clock className="w-5 h-5 text-teal-clinic" />,  title: 'Horário de Atendimento', text: settings.hours ?? '' },
+    { icon: <Mail className="w-5 h-5 text-teal-clinic" />,   title: 'E-mail',                 text: settings.email ?? '' },
   ]
 
   return (
-    <section id="contato" className="py-24 px-6 md:px-20 bg-dark">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-start">
+    <section id="contato" className="py-24 px-6 md:px-20 bg-gradient-to-b from-cream to-ivory relative overflow-hidden">
+      {/* Decorative dot background pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#C9A96E_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 md:gap-20 items-start relative z-10">
         {/* Info */}
-        <div>
-          <span className="text-[11px] tracking-[0.25em] uppercase text-gold block mb-4">✦ Entre em contato</span>
-          <h2 className="font-display text-5xl md:text-6xl font-light text-cream leading-tight mb-10">
-            Agende <em className="italic text-gold">sua consulta</em>
+        <div className="flex flex-col justify-center h-full">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-gold block mb-4 font-semibold font-sans">
+            ✦ Entre em contato
+          </span>
+          <h2 className="font-display text-5xl md:text-6xl font-light text-dark leading-tight mb-12">
+            Agende <em className="italic text-gold font-normal">sua consulta</em>
           </h2>
-          {infoItems.map(item => (
-            <div key={item.title} className="flex gap-4 mb-7">
-              <div className="w-11 h-11 flex-shrink-0 rounded-sm bg-gold/10 border border-gold/20 flex items-center justify-center text-lg">
-                {item.icon}
+          
+          <div className="flex flex-col gap-8">
+            {infoItems.map(item => (
+              <div key={item.title} className="flex gap-5 items-start">
+                <div className="w-12 h-12 rounded-[18px] bg-teal-clinic/5 border border-teal-clinic/10 flex items-center justify-center flex-shrink-0 shadow-sm">
+                  {item.icon}
+                </div>
+                <div className="pt-1">
+                  <h4 className="text-[10px] tracking-[0.12em] uppercase text-gold font-semibold mb-1 font-sans">{item.title}</h4>
+                  <p className="text-sm text-stone-muted leading-relaxed font-light">{item.text}</p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-[10px] tracking-[0.12em] uppercase text-gold mb-1">{item.title}</h4>
-                <p className="text-sm text-cream/60 leading-relaxed">{item.text}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Form */}
-        <div className="bg-white/5 border border-gold/15 rounded-sm p-10">
+        {/* Form Container */}
+        <div className="bg-white/40 border border-white/70 backdrop-blur-md rounded-[32px] p-8 md:p-10 shadow-lg relative overflow-hidden">
+          {/* Faint background ambient glow */}
+          <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-teal-light/5 rounded-full blur-2xl pointer-events-none" />
+          
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input
               label="Nome *"
               placeholder="Seu nome completo"
               value={form.name}
               onChange={e => set('name', e.target.value)}
-              className="bg-white/5 border-white/10 text-cream placeholder:text-cream/20 focus:border-gold"
+              className="bg-white border-white/60 text-dark placeholder:text-stone-300 focus:border-gold rounded-2xl shadow-sm"
             />
             <Input
               label="Telefone *"
               placeholder="(00) 9 0000-0000"
               value={form.phone}
               onChange={e => set('phone', e.target.value)}
-              className="bg-white/5 border-white/10 text-cream placeholder:text-cream/20 focus:border-gold"
+              className="bg-white border-white/60 text-dark placeholder:text-stone-300 focus:border-gold rounded-2xl shadow-sm"
             />
           </div>
           <div className="mb-4">
@@ -112,7 +123,7 @@ export function Contact({ onSuccess, onError }: ContactProps) {
               placeholder="seu@email.com"
               value={form.email}
               onChange={e => set('email', e.target.value)}
-              className="bg-white/5 border-white/10 text-cream placeholder:text-cream/20 focus:border-gold"
+              className="bg-white border-white/60 text-dark placeholder:text-stone-300 focus:border-gold rounded-2xl shadow-sm"
             />
           </div>
           <div className="mb-4">
@@ -121,7 +132,7 @@ export function Contact({ onSuccess, onError }: ContactProps) {
               options={SERVICE_OPTIONS}
               value={form.service}
               onChange={e => set('service', e.target.value)}
-              className="bg-white/5 border-white/10 text-cream focus:border-gold"
+              className="bg-white border-white/60 text-dark focus:border-gold rounded-2xl shadow-sm"
             />
           </div>
           <div className="mb-6">
@@ -130,13 +141,14 @@ export function Contact({ onSuccess, onError }: ContactProps) {
               placeholder="Descreva como podemos ajudar..."
               value={form.message}
               onChange={e => set('message', e.target.value)}
-              className="bg-white/5 border-white/10 text-cream placeholder:text-cream/20 focus:border-gold"
+              className="bg-white border-white/60 text-dark placeholder:text-stone-300 focus:border-gold rounded-2xl shadow-sm"
             />
           </div>
+          
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full bg-gold text-dark py-4 text-[11px] tracking-[0.15em] uppercase rounded-sm font-medium hover:bg-cream transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-teal-clinic hover:bg-dark text-cream py-4 text-[11px] tracking-[0.15em] uppercase rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-teal-clinic/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? 'Enviando...' : 'Enviar Mensagem →'}
           </button>

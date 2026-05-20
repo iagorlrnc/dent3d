@@ -18,31 +18,47 @@ export function Testimonials() {
   }, [])
 
   return (
-    <section id="depoimentos" className="py-24 px-6 md:px-20 bg-ivory">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-[11px] tracking-[0.25em] uppercase text-gold block mb-4">✦ O que dizem nossos pacientes</span>
+    <section id="depoimentos" className="py-24 px-6 md:px-20 bg-gradient-to-b from-ivory to-cream relative">
+      {/* Decorative dot background pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#C9A96E_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-20">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-gold block mb-4 font-semibold font-sans">
+            ✦ O que dizem nossos pacientes
+          </span>
           <h2 className="font-display text-5xl md:text-6xl font-light text-dark">
-            <em className="italic text-gold">Depoimentos</em>
+            <em className="italic text-gold font-normal">Depoimentos</em>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map(t => (
-            <div key={t.id} className="bg-white p-9 rounded-sm border-t-[3px] border-gold shadow-sm hover:shadow-lg transition-shadow">
-              <div className="text-gold text-base tracking-[3px] mb-4">
-                {'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}
+            <div 
+              key={t.id} 
+              className="bg-white/40 border border-white/70 backdrop-blur-md p-8 md:p-10 rounded-[32px] shadow-[0_10px_30px_rgba(74,123,111,0.01)] hover:border-gold/30 hover:bg-white/60 hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                {/* Minimalist Gold Rating Stars */}
+                <div className="text-gold text-[12px] tracking-[4px] mb-6 select-none font-sans">
+                  {'★'.repeat(t.rating)}{'☆'.repeat(5 - t.rating)}
+                </div>
+                
+                {/* Quotation text */}
+                <p className="font-display text-lg italic text-dark/95 leading-relaxed mb-8">
+                  "{t.text}"
+                </p>
               </div>
-              <p className="font-display text-lg italic text-dark leading-relaxed mb-6">
-                "{t.text}"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gold-light flex items-center justify-center text-base">
-                  😊
+
+              {/* Patient Info */}
+              <div className="flex items-center gap-4 mt-auto border-t border-teal-clinic/10 pt-6">
+                {/* Patient Initial Monogram Circle */}
+                <div className="w-10 h-10 rounded-full bg-teal-clinic/5 border border-teal-clinic/10 flex items-center justify-center font-display text-sm font-semibold text-teal-clinic uppercase select-none">
+                  {t.patient_name.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-dark">{t.patient_name}</p>
-                  <p className="text-xs text-stone-muted">
+                  <p className="text-sm font-semibold text-dark font-sans">{t.patient_name}</p>
+                  <p className="text-[10px] text-stone-muted uppercase tracking-wider mt-0.5 font-sans font-light">
                     {new Date(t.created_at).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
                   </p>
                 </div>

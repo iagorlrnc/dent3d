@@ -73,10 +73,21 @@ function Loader() {
   const loaderStyle = `
     @keyframes toothBounce {
       0%, 100% {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
       50% {
-        transform: translateY(-12px);
+        transform: translateY(-8px) scale(1.05);
+      }
+    }
+    @keyframes barProgress {
+      0% {
+        left: -100%;
+      }
+      50% {
+        left: 0%;
+      }
+      100% {
+        left: 100%;
       }
     }
   `
@@ -84,17 +95,25 @@ function Loader() {
   return (
     <Html center>
       <style dangerouslySetInnerHTML={{ __html: loaderStyle }} />
-      <div className="flex flex-col items-center justify-center bg-dark/95 p-6 rounded-2xl border border-gold/20 shadow-2xl backdrop-blur-md min-w-[180px]">
+      <div className="flex flex-col items-center justify-center bg-cream/90 border border-teal-clinic/20 p-7 rounded-3xl shadow-xl backdrop-blur-lg min-w-[200px] transition-all duration-300">
         <div 
-          className="w-16 h-16 flex items-center justify-center"
-          style={{ animation: 'toothBounce 0.8s infinite ease-in-out' }}
+          className="w-14 h-14 flex items-center justify-center mb-3"
+          style={{ animation: 'toothBounce 1.2s infinite ease-in-out' }}
         >
-          <svg viewBox="0 0 512 512" className="w-10 h-10 fill-gold">
+          {/* Elegant Tooth Icon - Teal Clinic */}
+          <svg viewBox="0 0 512 512" className="w-9 h-9 fill-teal-clinic">
             <path d="M154.1 52.1C137.3 39.1 116.7 32 95.5 32C42.7 32 0 74.7 0 127.5v6.2c0 15.8 3.7 31.3 10.7 45.5l23.5 47.1c4.5 8.9 7.6 18.4 9.4 28.2L80.4 460.2c2 11.2 11.6 19.4 22.9 19.8s21.4-7.4 24-18.4l28.9-121.3C160.2 323.7 175 312 192 312s31.8 11.7 35.8 28.3l28.9 121.3c2.6 11.1 12.7 18.8 24 18.4s20.9-8.6 22.9-19.8l36.7-205.8c1.8-9.8 4.9-19.3 9.4-28.2l23.5-47.1c7.1-14.1 10.7-29.7 10.7-45.5v-2.1c0-55-44.6-99.6-99.6-99.6c-24.1 0-47.4 8.8-65.6 24.6l-3.2 2.8 19.5 15.2c7 5.4 8.2 15.5 2.8 22.5s-15.5 8.2-22.5 2.8l-24.4-19-37-28.8z"/>
           </svg>
         </div>
-        <p className="text-[11px] tracking-[0.25em] uppercase text-gold font-sans font-light mt-2 animate-pulse">
-          Carregando...
+        {/* Soft elegant progress bar */}
+        <div className="w-16 h-1 bg-teal-clinic/10 rounded-full overflow-hidden relative mb-4">
+          <div 
+            className="absolute top-0 bottom-0 w-full bg-teal-clinic rounded-full"
+            style={{ animation: 'barProgress 2s infinite ease-in-out' }}
+          />
+        </div>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-stone-muted font-sans font-medium">
+          Carregando
         </p>
       </div>
     </Html>
