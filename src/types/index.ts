@@ -28,11 +28,9 @@ export type Service = {
   id: string
   name: string
   description: string
-  price_from: number
-  unit: string | null   // e.g. "por dente", "por mês"
-  icon: string
   active: boolean
   order_index: number
+  image_url?: string | null // custom uploaded service image URL
   created_at: string
 }
 

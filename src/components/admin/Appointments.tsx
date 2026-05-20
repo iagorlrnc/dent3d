@@ -82,13 +82,13 @@ export function Appointments({ onSuccess, onError }: Props) {
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 bg-dark text-cream px-5 py-2.5 rounded-sm text-xs tracking-widest uppercase hover:bg-gold hover:text-dark transition-all"
+          className="flex items-center gap-2 bg-teal-clinic text-cream px-6 py-2.5 rounded-full text-xs tracking-widest uppercase font-semibold hover:bg-dark transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
         >
           <Plus size={14} /> Novo
         </button>
       </div>
 
-      <div className="bg-white rounded-sm shadow-sm overflow-hidden">
+      <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-white/70 shadow-[0_8px_30px_rgb(26,22,18,0.02)] overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-16 text-stone-muted">
             <Loader2 size={20} className="animate-spin mr-2" /> Carregando...
@@ -99,9 +99,9 @@ export function Appointments({ onSuccess, onError }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-ivory">
-                  {['Paciente','Procedimento','Data','Horário','Dr(a).','Status','Ações'].map(h => (
-                    <th key={h} className="px-5 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted whitespace-nowrap">
+                <tr className="bg-ivory/40 border-b border-gold/5">
+                  {['Paciente','Procedimento','Data','Horário','Dr(a).','Alterar Status','Status','Ações'].map(h => (
+                    <th key={h} className="px-5 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold whitespace-nowrap">
                       {h}
                     </th>
                   ))}
@@ -109,7 +109,7 @@ export function Appointments({ onSuccess, onError }: Props) {
               </thead>
               <tbody>
                 {items.map(apt => (
-                  <tr key={apt.id} className="border-b border-ivory last:border-0 hover:bg-cream/30 transition-colors">
+                  <tr key={apt.id} className="border-b border-gold/5 last:border-0 hover:bg-white/50 transition-colors">
                     <td className="px-5 py-3.5 text-sm text-dark font-medium">{apt.patient_name}</td>
                     <td className="px-5 py-3.5 text-sm text-stone-muted">{apt.service}</td>
                     <td className="px-5 py-3.5 text-sm text-stone-muted whitespace-nowrap">
@@ -121,7 +121,7 @@ export function Appointments({ onSuccess, onError }: Props) {
                       <select
                         value={apt.status}
                         onChange={e => handleStatusChange(apt.id, e.target.value as Appointment['status'])}
-                        className="text-xs border-0 bg-transparent focus:outline-none cursor-pointer"
+                        className="text-xs border border-white/60 bg-white/40 backdrop-blur-sm rounded-full px-3 py-1 focus:outline-none focus:border-teal-clinic cursor-pointer font-medium text-stone-muted hover:text-dark transition-all duration-300"
                       >
                         {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                       </select>
@@ -146,7 +146,7 @@ export function Appointments({ onSuccess, onError }: Props) {
       </div>
 
       {/* Modal */}
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Novo Agendamento" size="lg">
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Novo Agendamento" size="lg" variant="solid-light">
         <div className="grid grid-cols-2 gap-4">
           <Input label="Paciente *" placeholder="Nome completo" value={draft.patient_name} onChange={e => set('patient_name', e.target.value)} />
           <Input label="Telefone *" placeholder="(00) 9 0000-0000" value={draft.phone} onChange={e => set('phone', e.target.value)} />
@@ -157,14 +157,17 @@ export function Appointments({ onSuccess, onError }: Props) {
           <Select label="Dentista" value={draft.dentist} onChange={e => set('dentist', e.target.value)} options={DENTISTS.map(d => ({ value: d, label: d }))} />
           <Select label="Status" value={draft.status} onChange={e => set('status', e.target.value)} options={STATUSES} />
         </div>
-        <div className="flex justify-end gap-3 mt-6">
-          <button onClick={() => setModalOpen(false)} className="px-5 py-2.5 border border-ivory rounded-sm text-sm text-stone-muted hover:border-stone-muted transition-colors">
+        <div className="flex justify-end gap-3 mt-8">
+          <button
+            onClick={() => setModalOpen(false)}
+            className="px-6 py-2.5 border border-teal-clinic/20 rounded-full text-sm text-teal-clinic bg-white/40 hover:bg-white/75 hover:border-teal-clinic transition-all duration-300 font-semibold shadow-sm hover:-translate-y-0.5 active:translate-y-0"
+          >
             Cancelar
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 bg-dark text-cream px-6 py-2.5 rounded-sm text-sm hover:bg-gold hover:text-dark transition-all disabled:opacity-50"
+            className="flex items-center gap-2 bg-teal-clinic text-cream px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-dark transition-all duration-300 shadow-md hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
           >
             {saving && <Loader2 size={14} className="animate-spin" />}
             Salvar

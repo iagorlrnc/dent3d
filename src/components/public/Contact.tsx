@@ -26,16 +26,21 @@ const DEFAULT_SETTINGS: Partial<ClinicSettings> = {
 interface ContactProps {
   onSuccess: (msg: string) => void
   onError: (msg: string) => void
+  settings?: Partial<ClinicSettings> | null
 }
 
-export function Contact({ onSuccess, onError }: ContactProps) {
+export function Contact({ onSuccess, onError, settings: initialSettings }: ContactProps) {
   const [settings, setSettings] = useState<Partial<ClinicSettings>>(DEFAULT_SETTINGS)
   const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    settingsQueries.get().then(({ data }) => { if (data) setSettings(data) })
-  }, [])
+    if (initialSettings) {
+      setSettings(initialSettings)
+    } else {
+      settingsQueries.get().then(({ data }) => { if (data) setSettings(data) })
+    }
+  }, [initialSettings])
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -53,7 +58,11 @@ export function Contact({ onSuccess, onError }: ContactProps) {
       message: form.message,
     })
     setSubmitting(false)
-    if (error) { onError('Erro ao enviar mensagem. Tente novamente.'); return }
+    if (error) {
+      console.error('Erro ao enviar mensagem:', error)
+      onError('Erro ao enviar mensagem. Tente novamente.')
+      return
+    }
     setForm({ name: '', phone: '', email: '', service: '', message: '' })
     onSuccess('Mensagem enviada! Entraremos em contato em breve.')
   }

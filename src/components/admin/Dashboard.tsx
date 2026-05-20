@@ -66,16 +66,19 @@ export function Dashboard() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {statCards.map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className={`bg-white rounded-sm shadow-sm border-b-[3px] ${color} p-6`}>
+          <div
+            key={label}
+            className={`group/stat flex flex-col p-6 rounded-2xl bg-white/40 backdrop-blur-md border border-white/70 border-b-[3px] ${color} hover:bg-white/80 transition-all duration-300 shadow-[0_8px_30px_rgb(26,22,18,0.02)] hover:shadow-md hover:-translate-y-0.5`}
+          >
             <div className="flex items-start justify-between">
               <div>
-                <div className="font-display text-4xl font-light text-dark">{value}</div>
-                <div className="text-[11px] tracking-[0.1em] uppercase text-stone--muted mt-1 text-stone-muted">
+                <div className="font-display text-4xl font-light text-dark group-hover/stat:text-teal-clinic transition-colors duration-300">{value}</div>
+                <div className="text-[10px] tracking-[0.1em] uppercase text-stone-muted mt-2 font-medium font-sans">
                   {label}
                 </div>
               </div>
-              <div className="w-9 h-9 rounded-full bg-ivory flex items-center justify-center">
-                <Icon size={16} className="text-stone-muted" />
+              <div className="w-9 h-9 rounded-xl bg-teal-clinic/5 border border-teal-clinic/10 flex items-center justify-center transition-colors group-hover/stat:bg-teal-clinic/10">
+                <Icon size={16} className="text-teal-clinic" />
               </div>
             </div>
           </div>
@@ -83,35 +86,35 @@ export function Dashboard() {
       </div>
 
       {/* Today's appointments */}
-      <div className="bg-white rounded-sm shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ivory flex items-center justify-between">
+      <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-white/70 shadow-[0_8px_30px_rgb(26,22,18,0.02)] overflow-hidden">
+        <div className="px-6 py-5 border-b border-white/60 flex items-center justify-between">
           <h3 className="font-display text-xl font-light text-dark">Consultas de Hoje</h3>
-          <span className="text-xs text-stone-muted">
+          <span className="text-xs text-stone-muted font-medium bg-white/60 px-3 py-1 rounded-full border border-white/80 shadow-sm">
             {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
           </span>
         </div>
         {todayAppointments.length === 0 ? (
-          <div className="px-6 py-10 text-center text-stone-muted text-sm">
+          <div className="px-6 py-12 text-center text-stone-muted text-sm font-light">
             Nenhuma consulta agendada para hoje.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-ivory">
-                  <th className="px-6 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted">Paciente</th>
-                  <th className="px-6 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted">Procedimento</th>
-                  <th className="px-6 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted">Horário</th>
-                  <th className="px-6 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted">Dr(a).</th>
-                  <th className="px-6 py-3 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted">Status</th>
+                <tr className="bg-ivory/40 border-b border-gold/5">
+                  <th className="px-6 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold">Paciente</th>
+                  <th className="px-6 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold">Procedimento</th>
+                  <th className="px-6 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold">Horário</th>
+                  <th className="px-6 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold">Dr(a).</th>
+                  <th className="px-6 py-3.5 text-left text-[10px] tracking-[0.15em] uppercase text-stone-muted font-semibold">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {todayAppointments.map(apt => (
-                  <tr key={apt.id} className="border-b border-ivory last:border-0 hover:bg-cream/40 transition-colors">
-                    <td className="px-6 py-4 text-sm text-dark">{apt.patient_name}</td>
+                  <tr key={apt.id} className="border-b border-gold/5 last:border-0 hover:bg-white/50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-dark font-medium">{apt.patient_name}</td>
                     <td className="px-6 py-4 text-sm text-stone-muted">{apt.service}</td>
-                    <td className="px-6 py-4 text-sm text-stone-muted">{apt.time}</td>
+                    <td className="px-6 py-4 text-sm text-stone-muted font-medium">{apt.time}</td>
                     <td className="px-6 py-4 text-sm text-stone-muted">{apt.dentist}</td>
                     <td className="px-6 py-4">
                       <Badge status={apt.status} />

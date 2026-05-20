@@ -1,22 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { beforeAfterQueries } from '@/lib/queries'
 import type { BeforeAfter } from '@/types'
+import { Smile } from 'lucide-react'
 
-// Fallback cases when Supabase has no data
-const FALLBACK_CASES: BeforeAfter[] = [
-  {
-    id: '1', title: 'Clareamento', category: 'Clareamento', active: true, order_index: 1, created_at: '',
-    before_url: '', after_url: '',
-  },
-  {
-    id: '2', title: 'Lentes', category: 'Lentes de Porcelana', active: true, order_index: 2, created_at: '',
-    before_url: '', after_url: '',
-  },
-  {
-    id: '3', title: 'Ortodontia', category: 'Alinhadores 3D', active: true, order_index: 3, created_at: '',
-    before_url: '', after_url: '',
-  },
-]
 
 const PLACEHOLDER_BEFORE = [
   { bg: 'from-stone-800 to-stone-900', label: 'Pigmentação e Irregularidades de Cor' },
@@ -126,17 +112,38 @@ function Slider({ beforeUrl, afterUrl, beforePlaceholder, afterPlaceholder }: Sl
 }
 
 export function BeforeAfterSection() {
-  const [cases, setCases] = useState<BeforeAfter[]>(FALLBACK_CASES)
+  const [cases, setCases] = useState<BeforeAfter[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeIdx, setActiveIdx] = useState(0)
 
   useEffect(() => {
-    beforeAfterQueries.listActive().then(({ data }) => {
-      if (data && data.length > 0) setCases(data)
-    })
+    async function fetchCases() {
+      try {
+        const { data } = await beforeAfterQueries.listActive()
+        setCases(data ?? [])
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchCases()
   }, [])
 
-  const active = cases[activeIdx] ?? cases[0]
-  const idx = Math.min(activeIdx, PLACEHOLDER_BEFORE.length - 1)
+  if (loading) {
+    return (
+      <section id="resultados" className="py-24 px-6 md:px-20 bg-gradient-to-b from-[#1C332F] to-[#122320] relative overflow-hidden flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3 text-cream/70">
+          <div className="w-8 h-8 rounded-full border-2 border-gold border-t-transparent animate-spin" />
+          <span className="text-xs font-sans tracking-widest uppercase">Carregando casos...</span>
+        </div>
+      </section>
+    )
+  }
+
+  const hasCases = cases.length > 0
+  const active = hasCases ? (cases[activeIdx] ?? cases[0]) : null
+  const idx = hasCases ? Math.min(activeIdx, PLACEHOLDER_BEFORE.length - 1) : 0
 
   return (
     <section id="resultados" className="py-24 px-6 md:px-20 bg-gradient-to-b from-[#1C332F] to-[#122320] relative overflow-hidden">
@@ -156,32 +163,44 @@ export function BeforeAfterSection() {
           </p>
         </div>
 
-        {/* Tabs - Glassmorphic capsule */}
-        <div className="flex bg-white/5 border border-white/10 rounded-full p-1.5 gap-1 max-w-max mx-auto mb-12 shadow-inner">
-          {cases.map((c, i) => (
-            <button
-              key={c.id}
-              onClick={() => setActiveIdx(i)}
-              className={`px-6 py-2.5 text-[10px] tracking-[0.15em] uppercase transition-all duration-300 font-sans font-semibold rounded-full ${
-                i === activeIdx
-                  ? 'text-[#1C332F] bg-gold shadow-md'
-                  : 'text-cream/55 hover:text-cream/80 hover:bg-white/5'
-              }`}
-            >
-              {c.category || c.title}
-            </button>
-          ))}
-        </div>
+        {!hasCases ? (
+          <div className="max-w-md mx-auto text-center p-12 bg-white/5 border border-white/10 rounded-[32px] backdrop-blur-md shadow-inner">
+            <Smile className="w-10 h-10 text-gold mx-auto mb-4 animate-pulse" />
+            <p className="text-cream font-light text-base mb-2">Nenhum caso clínico disponível</p>
+            <p className="text-cream/50 text-xs font-light">Estamos preparando nossa galeria com novos casos reais de transformações estéticas e funcionais. Fique atento!</p>
+          </div>
+        ) : (
+          <>
+            {/* Tabs - Glassmorphic capsule */}
+            <div className="flex bg-white/5 border border-white/10 rounded-full p-1.5 gap-1 max-w-max mx-auto mb-12 shadow-inner">
+              {cases.map((c, i) => (
+                <button
+                  key={c.id}
+                  onClick={() => setActiveIdx(i)}
+                  className={`px-6 py-2.5 text-[10px] tracking-[0.15em] uppercase transition-all duration-300 font-sans font-semibold rounded-full ${
+                    i === activeIdx
+                      ? 'text-[#1C332F] bg-gold shadow-md'
+                      : 'text-cream/55 hover:text-cream/80 hover:bg-white/5'
+                  }`}
+                >
+                  {c.category || c.title}
+                </button>
+              ))}
+            </div>
 
-        <div className="max-w-4xl mx-auto">
-          <Slider
-            key={active.id}
-            beforeUrl={active.before_url}
-            afterUrl={active.after_url}
-            beforePlaceholder={PLACEHOLDER_BEFORE[idx]}
-            afterPlaceholder={PLACEHOLDER_AFTER[idx]}
-          />
-        </div>
+            <div className="max-w-4xl mx-auto">
+              {active && (
+                <Slider
+                  key={active.id}
+                  beforeUrl={active.before_url}
+                  afterUrl={active.after_url}
+                  beforePlaceholder={PLACEHOLDER_BEFORE[idx]}
+                  afterPlaceholder={PLACEHOLDER_AFTER[idx]}
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
     </section>
   )

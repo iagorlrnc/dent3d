@@ -17,8 +17,8 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 }
 
 const baseClass =
-  'w-full bg-ivory border border-ivory rounded-sm px-4 py-3 text-dark text-sm font-sans ' +
-  'placeholder:text-stone-muted/60 focus:outline-none focus:border-gold transition-colors'
+  'w-full bg-white/60 border border-white/80 rounded-2xl px-4 py-3 text-dark text-sm font-sans ' +
+  'placeholder:text-stone-muted/40 focus:outline-none focus:border-teal-clinic focus:ring-1 focus:ring-teal-clinic/20 backdrop-blur-sm shadow-sm transition-all duration-300'
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, className = '', ...props }, ref) => (
@@ -43,11 +43,16 @@ export function Select({ label, error, options, className = '', ...props }: Sele
           {label}
         </label>
       )}
-      <select className={`${baseClass} ${className}`} {...props}>
-        {options.map(o => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
+      <div className="relative w-full">
+        <select
+          className={`${baseClass} pr-10 appearance-none bg-no-repeat bg-[right_1rem_center] [background-size:1em_1em] bg-[url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%237A6F65'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='6%209%2012%2015%2018%209'%3E%3C/polyline%3E%3C/svg%3E")] ${className}`}
+          {...props}
+        >
+          {options.map(o => (
+            <option key={o.value} value={o.value} className="bg-cream text-dark">{o.label}</option>
+          ))}
+        </select>
+      </div>
       {error && <p className="text-xs text-red-400">{error}</p>}
     </div>
   )

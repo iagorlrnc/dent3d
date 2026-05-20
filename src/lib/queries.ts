@@ -164,7 +164,7 @@ export const contactQueries = {
       .order('created_at', { ascending: false }),
 
   create: (data: Omit<ContactMessage, 'id' | 'created_at' | 'read'>) =>
-    supabase.from('contact_messages').insert(data).select().single(),
+    supabase.from('contact_messages').insert(data),
 
   markRead: (id: string) =>
     supabase.from('contact_messages').update({ read: true }).eq('id', id),
@@ -186,4 +186,30 @@ export const settingsQueries = {
       .eq('id', id)
       .select()
       .single(),
+
+  upsert: (data: Partial<ClinicSettings>) =>
+    supabase
+      .from('clinic_settings')
+      .upsert({ ...data, updated_at: new Date().toISOString() } as any)
+      .select()
+      .single(),
+}
+
+// ─── Storage Queries ──────────────────────────────────────────────────────────
+
+export const storageQueries = {
+  uploadFile: async (bucket: string, path: string, file: File) => {
+    return supabase.storage.from(bucket).upload(path, file, {
+      cacheControl: '3600',
+      upsert: true,
+    })
+  },
+
+  getPublicUrl: (bucket: string, path: string) => {
+    return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl
+  },
+
+  removeFile: async (bucket: string, path: string) => {
+    return supabase.storage.from(bucket).remove([path])
+  },
 }

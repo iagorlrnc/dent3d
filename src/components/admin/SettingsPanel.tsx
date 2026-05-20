@@ -11,6 +11,16 @@ interface Props {
 
 type Draft = Omit<ClinicSettings, 'id' | 'updated_at'>
 
+const EMPTY_SETTINGS: Draft = {
+  clinic_name: 'Sorrir Clinic',
+  cro: 'CRO-SP 12345',
+  phone: '(11) 9 9999-9999',
+  whatsapp: '(11) 9 9999-9999',
+  email: 'contato@sorrirclinic.com.br',
+  address: 'Rua das Flores, 1250 — Sala 301, Centro, São Paulo — SP',
+  hours: 'Segunda a Sexta: 8h às 18h | Sábados: 8h às 13h',
+}
+
 export function SettingsPanel({ onSuccess, onError }: Props) {
   const [settingsId, setSettingsId] = useState<string | null>(null)
   const [draft, setDraft]           = useState<Draft | null>(null)
@@ -18,32 +28,45 @@ export function SettingsPanel({ onSuccess, onError }: Props) {
   const [saving, setSaving]         = useState(false)
 
   useEffect(() => {
-    settingsQueries.get().then(({ data }) => {
-      if (data) {
-        setSettingsId(data.id)
-        setDraft({
-          clinic_name: data.clinic_name,
-          cro: data.cro,
-          phone: data.phone,
-          whatsapp: data.whatsapp,
-          email: data.email,
-          address: data.address,
-          hours: data.hours,
-        })
+    const load = async () => {
+      try {
+        const { data } = await settingsQueries.get()
+        if (data) {
+          setSettingsId(data.id)
+          setDraft({
+            clinic_name: data.clinic_name,
+            cro: data.cro,
+            phone: data.phone,
+            whatsapp: data.whatsapp,
+            email: data.email,
+            address: data.address,
+            hours: data.hours,
+          })
+          setLoading(false)
+          return
+        }
+      } catch (err) {
+        // Fallback to defaults
       }
+      setDraft(EMPTY_SETTINGS)
       setLoading(false)
-    })
+    }
+    load()
   }, [])
 
   const set = (k: keyof Draft, v: string) =>
     setDraft(d => d ? { ...d, [k]: v } : d)
 
   const handleSave = async () => {
-    if (!settingsId || !draft) return
+    if (!draft) return
     setSaving(true)
-    const { error } = await settingsQueries.update(settingsId, draft)
+    const payload = settingsId ? { id: settingsId, ...draft } : draft
+    const { data, error } = await settingsQueries.upsert(payload)
     setSaving(false)
     if (error) { onError('Erro ao salvar configurações.'); return }
+    if (data) {
+      setSettingsId(data.id)
+    }
     onSuccess('Configurações salvas com sucesso!')
   }
 
@@ -63,8 +86,8 @@ export function SettingsPanel({ onSuccess, onError }: Props) {
       </div>
 
       {/* Clinic info */}
-      <div className="bg-white rounded-sm shadow-sm overflow-hidden mb-6">
-        <div className="px-6 py-4 border-b border-ivory">
+      <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-white/70 shadow-[0_8px_30px_rgb(26,22,18,0.02)] overflow-hidden mb-6">
+        <div className="px-6 py-5 border-b border-white/60">
           <h3 className="font-display text-xl font-light text-dark">Informações da Clínica</h3>
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -108,31 +131,16 @@ export function SettingsPanel({ onSuccess, onError }: Props) {
             />
           </div>
         </div>
-        <div className="px-6 py-4 border-t border-ivory bg-ivory/50 flex justify-end">
+        <div className="px-6 py-4.5 border-t border-white/60 bg-white/20 flex justify-end">
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 bg-dark text-cream px-6 py-2.5 rounded-sm text-sm hover:bg-gold hover:text-dark transition-all disabled:opacity-50"
+            className="flex items-center gap-2 bg-teal-clinic text-cream px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-dark transition-all duration-300 shadow-md hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
             {saving ? 'Salvando...' : 'Salvar Configurações'}
           </button>
         </div>
-      </div>
-
-      {/* Env info card */}
-      <div className="bg-dark rounded-sm p-6 border border-gold/15">
-        <h3 className="font-display text-lg font-light text-cream mb-3">
-          Variáveis de Ambiente <span className="text-gold">.env</span>
-        </h3>
-        <div className="font-mono text-xs text-cream/50 space-y-1.5 mb-4">
-          <div><span className="text-gold/70">VITE_SUPABASE_URL</span>=https://seu-projeto.supabase.co</div>
-          <div><span className="text-gold/70">VITE_SUPABASE_ANON_KEY</span>=eyJh...</div>
-        </div>
-        <p className="text-xs text-cream/30 leading-relaxed">
-          Configure estas variáveis no arquivo <code className="text-gold/60">.env</code> na raiz do projeto.
-          Nunca commite credenciais reais no repositório — use <code className="text-gold/60">.env.example</code> como referência.
-        </p>
       </div>
     </div>
   )

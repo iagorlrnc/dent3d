@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react'
 
 interface HeaderProps {
   onAdminClick: () => void
+  clinicName?: string
 }
 
 const navLinks = [
@@ -13,7 +14,7 @@ const navLinks = [
   { label: 'Contato',      href: '#contato' },
 ]
 
-export function Header({ onAdminClick }: HeaderProps) {
+export function Header({ onAdminClick, clinicName = 'Sorrir Clinic' }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -29,6 +30,20 @@ export function Header({ onAdminClick }: HeaderProps) {
     el?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const formatLogo = (name: string) => {
+    const parts = name.split(/\s+/)
+    if (parts.length > 1) {
+      return (
+        <>
+          {parts[0]}
+          <span className="text-gold">.</span>
+          {parts.slice(1).join(' ')}
+        </>
+      )
+    }
+    return <>{name}</>
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300">
       <div className={`mx-auto px-6 md:px-8 flex items-center justify-between transition-all duration-500 ${
@@ -38,7 +53,7 @@ export function Header({ onAdminClick }: HeaderProps) {
       }`}>
         {/* Logo */}
         <div className="font-display text-xl md:text-2xl font-light text-dark tracking-wide">
-          Sorrir<span className="text-gold">.</span>Clinic
+          {formatLogo(clinicName)}
         </div>
 
         {/* Desktop nav */}
