@@ -7,9 +7,9 @@ export type Appointment = {
   email: string | null
   service: string
   dentist: string
-  date: string        // ISO date string YYYY-MM-DD
-  time: string        // HH:MM
-  status: 'confirmado' | 'aguardando' | 'cancelado'
+  date: string // ISO date string YYYY-MM-DD
+  time: string // HH:MM
+  status: "confirmado" | "aguardando" | "cancelado"
   notes: string | null
   created_at: string
 }
@@ -34,6 +34,17 @@ export type Service = {
   created_at: string
 }
 
+export type Specialist = {
+  id: string
+  name: string
+  specialty: string
+  cro: string | null
+  image_url?: string | null
+  active: boolean
+  order_index: number
+  created_at: string
+}
+
 export type BeforeAfter = {
   id: string
   title: string
@@ -50,7 +61,7 @@ export type Testimonial = {
   patient_name: string
   rating: number
   text: string
-  status: 'pending' | 'approved' | 'rejected'
+  status: "pending" | "approved" | "rejected"
   created_at: string
 }
 
@@ -86,8 +97,8 @@ export type AdminUser = {
 
 // ─── UI helpers ──────────────────────────────────────────────────────────────
 
-export type AppointmentStatus = Appointment['status']
-export type TestimonialStatus = Testimonial['status']
+export type AppointmentStatus = Appointment["status"]
+export type TestimonialStatus = Testimonial["status"]
 
 export type NavItem = {
   label: string

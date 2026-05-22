@@ -1,39 +1,49 @@
-import { useState } from 'react'
-import { Menu } from 'lucide-react'
-import { AdminSidebar, type AdminPage } from '@/components/admin/AdminSidebar'
-import { Dashboard }    from '@/components/admin/Dashboard'
-import { Appointments } from '@/components/admin/Appointments'
-import { Services }     from '@/components/admin/Services'
-import { Gallery }      from '@/components/admin/Gallery'
-import { Testimonials } from '@/components/admin/Testimonials'
-import { Messages }     from '@/components/admin/Messages'
-import { SettingsPanel } from '@/components/admin/SettingsPanel'
-import { ToastContainer } from '@/components/ui/Toast'
-import { useToast }     from '@/hooks/useToast'
+import { useState } from "react"
+import { Menu } from "lucide-react"
+import { AdminSidebar, type AdminPage } from "@/components/admin/AdminSidebar"
+import { Dashboard } from "@/components/admin/Dashboard"
+import { Appointments } from "@/components/admin/Appointments"
+import { Services } from "@/components/admin/Services"
+import { Specialists } from "@/components/admin/Specialists"
+import { Gallery } from "@/components/admin/Gallery"
+import { Testimonials } from "@/components/admin/Testimonials"
+import { Messages } from "@/components/admin/Messages"
+import { SettingsPanel } from "@/components/admin/SettingsPanel"
+import { ToastContainer } from "@/components/ui/Toast"
+import { useToast } from "@/hooks/useToast"
 
 interface AdminPanelProps {
   onExit: () => void
 }
 
 export function AdminPanel({ onExit }: AdminPanelProps) {
-  const [page, setPage]         = useState<AdminPage>('dashboard')
+  const [page, setPage] = useState<AdminPage>("dashboard")
   const [mobileOpen, setMobileOpen] = useState(false)
   const { toasts, addToast, removeToast } = useToast()
 
   const pageProps = {
-    onSuccess: (m: string) => addToast(m, 'success'),
-    onError:   (m: string) => addToast(m, 'error'),
+    onSuccess: (m: string) => addToast(m, "success"),
+    onError: (m: string) => addToast(m, "error"),
   }
 
   const renderPage = () => {
     switch (page) {
-      case 'dashboard':    return <Dashboard />
-      case 'appointments': return <Appointments {...pageProps} />
-      case 'services':     return <Services {...pageProps} />
-      case 'gallery':      return <Gallery {...pageProps} />
-      case 'testimonials': return <Testimonials {...pageProps} />
-      case 'messages':     return <Messages {...pageProps} />
-      case 'settings':     return <SettingsPanel {...pageProps} />
+      case "dashboard":
+        return <Dashboard />
+      case "appointments":
+        return <Appointments {...pageProps} />
+      case "services":
+        return <Services {...pageProps} />
+      case "specialists":
+        return <Specialists {...pageProps} />
+      case "gallery":
+        return <Gallery {...pageProps} />
+      case "testimonials":
+        return <Testimonials {...pageProps} />
+      case "messages":
+        return <Messages {...pageProps} />
+      case "settings":
+        return <SettingsPanel {...pageProps} />
     }
   }
 
@@ -48,7 +58,9 @@ export function AdminPanel({ onExit }: AdminPanelProps) {
       <AdminSidebar
         current={page}
         onChange={setPage}
-        onClose={() => { setMobileOpen(false); }}
+        onClose={() => {
+          setMobileOpen(false)
+        }}
         mobileOpen={mobileOpen}
       />
 

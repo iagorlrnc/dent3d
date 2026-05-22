@@ -1,17 +1,25 @@
 import {
-  LayoutDashboard, Calendar, Stethoscope,
-  Images, MessageSquare, Settings, LogOut, X,
-} from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+  LayoutDashboard,
+  Calendar,
+  Stethoscope,
+  Images,
+  MessageSquare,
+  Settings,
+  LogOut,
+  X,
+  Users,
+} from "lucide-react"
+import { useAuth } from "@/hooks/useAuth"
 
 export type AdminPage =
-  | 'dashboard'
-  | 'appointments'
-  | 'services'
-  | 'gallery'
-  | 'testimonials'
-  | 'messages'
-  | 'settings'
+  | "dashboard"
+  | "appointments"
+  | "services"
+  | "specialists"
+  | "gallery"
+  | "testimonials"
+  | "messages"
+  | "settings"
 
 interface SidebarProps {
   current: AdminPage
@@ -21,16 +29,22 @@ interface SidebarProps {
 }
 
 const ITEMS: { id: AdminPage; label: string; Icon: React.ElementType }[] = [
-  { id: 'dashboard',    label: 'Dashboard',      Icon: LayoutDashboard },
-  { id: 'appointments', label: 'Agendamentos',    Icon: Calendar },
-  { id: 'services',     label: 'Serviços',        Icon: Stethoscope },
-  { id: 'gallery',      label: 'Galeria Antes/Depois', Icon: Images },
-  { id: 'testimonials', label: 'Depoimentos',     Icon: MessageSquare },
-  { id: 'messages',     label: 'Mensagens',       Icon: MessageSquare },
-  { id: 'settings',     label: 'Configurações',   Icon: Settings },
+  { id: "dashboard", label: "Dashboard", Icon: LayoutDashboard },
+  { id: "appointments", label: "Agendamentos", Icon: Calendar },
+  { id: "services", label: "Serviços", Icon: Stethoscope },
+  { id: "specialists", label: "Especialistas", Icon: Users },
+  { id: "gallery", label: "Galeria Antes/Depois", Icon: Images },
+  { id: "testimonials", label: "Depoimentos", Icon: MessageSquare },
+  { id: "messages", label: "Mensagens", Icon: MessageSquare },
+  { id: "settings", label: "Configurações", Icon: Settings },
 ]
 
-export function AdminSidebar({ current, onChange, onClose, mobileOpen }: SidebarProps) {
+export function AdminSidebar({
+  current,
+  onChange,
+  onClose,
+  mobileOpen,
+}: SidebarProps) {
   const { signOut } = useAuth()
 
   const handleLogout = async () => {
@@ -52,7 +66,7 @@ export function AdminSidebar({ current, onChange, onClose, mobileOpen }: Sidebar
         className={`
           fixed top-0 left-0 h-screen w-64 bg-white/40 backdrop-blur-lg border-r border-white/60 z-40 flex flex-col
           transition-transform duration-300 ease-in-out
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0 md:static md:h-auto
         `}
       >
@@ -66,7 +80,10 @@ export function AdminSidebar({ current, onChange, onClose, mobileOpen }: Sidebar
               Painel Admin
             </p>
           </div>
-          <button onClick={onClose} className="md:hidden text-stone-muted hover:text-teal-clinic">
+          <button
+            onClick={onClose}
+            className="md:hidden text-stone-muted hover:text-teal-clinic"
+          >
             <X size={18} />
           </button>
         </div>
@@ -76,13 +93,17 @@ export function AdminSidebar({ current, onChange, onClose, mobileOpen }: Sidebar
           {ITEMS.map(({ id, label, Icon }) => (
             <button
               key={id}
-              onClick={() => { onChange(id); onClose() }}
+              onClick={() => {
+                onChange(id)
+                onClose()
+              }}
               className={`
                 w-full flex items-center gap-3 px-7 py-3.5 text-sm transition-all duration-300
                 border-l-[3px] text-left font-medium
-                ${current === id
-                  ? 'text-teal-clinic border-teal-clinic bg-teal-clinic/5 font-semibold'
-                  : 'text-stone-muted/80 border-transparent hover:text-dark hover:bg-white/30'
+                ${
+                  current === id
+                    ? "text-teal-clinic border-teal-clinic bg-teal-clinic/5 font-semibold"
+                    : "text-stone-muted/80 border-transparent hover:text-dark hover:bg-white/30"
                 }
               `}
             >
@@ -100,7 +121,9 @@ export function AdminSidebar({ current, onChange, onClose, mobileOpen }: Sidebar
             </div>
             <div>
               <p className="text-xs text-dark font-semibold">Administrador</p>
-              <p className="text-[10px] text-stone-muted/70">admin@sorrirclinic.com.br</p>
+              <p className="text-[10px] text-stone-muted/70">
+                admin@sorrirclinic.com.br
+              </p>
             </div>
           </div>
           <button

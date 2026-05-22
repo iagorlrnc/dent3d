@@ -30,6 +30,7 @@ function getServiceImage(name: string): string {
 export function Services() {
   const [services, setServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
+  const [rotationByServiceId, setRotationByServiceId] = useState<Record<string, number>>({})
 
   useEffect(() => {
     async function fetchServices() {
@@ -86,8 +87,15 @@ export function Services() {
               <div
                 key={service.id}
                 className="perspective-1000 w-full h-[380px] md:h-[400px] group cursor-pointer"
+                onClick={() => setRotationByServiceId(current => ({
+                  ...current,
+                  [service.id]: (current[service.id] ?? 0) + 180,
+                }))}
               >
-                <div className="relative w-full h-full transition-transform duration-700 preserve-3d group-hover:rotate-y-180">
+                <div
+                  className="relative w-full h-full transition-transform duration-700 preserve-3d"
+                  style={{ transform: `rotateY(${rotationByServiceId[service.id] ?? 0}deg)` }}
+                >
                   {/* Front Face (Photo Card) */}
                   <div className="absolute inset-0 w-full h-full rounded-[32px] overflow-hidden backface-hidden shadow-[0_4px_20px_rgba(74,123,111,0.02)] border border-white/70 bg-ivory">
                     <img
@@ -104,7 +112,7 @@ export function Services() {
                         {service.name}
                       </h3>
                       <span className="text-[9px] tracking-[0.2em] uppercase text-gold font-semibold font-sans flex items-center gap-1.5">
-                        Passe o mouse para ver detalhes <span className="text-xs">✦</span>
+                        Clique para ver detalhes <span className="text-xs">✦</span>
                       </span>
                     </div>
                   </div>

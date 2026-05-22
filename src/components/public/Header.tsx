@@ -14,7 +14,7 @@ const navLinks = [
   { label: 'Contato',      href: '#contato' },
 ]
 
-export function Header({ onAdminClick, clinicName = 'Sorrir Clinic' }: HeaderProps) {
+export function Header({ onAdminClick, clinicName = 'Clinica' }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 

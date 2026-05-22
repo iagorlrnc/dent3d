@@ -3,6 +3,7 @@ import type {
   Appointment,
   Patient,
   Service,
+  Specialist,
   BeforeAfter,
   Testimonial,
   ContactMessage,
@@ -96,6 +97,29 @@ export const serviceQueries = {
 
   remove: (id: string) =>
     supabase.from('services').delete().eq('id', id),
+}
+
+// ─── Specialists ────────────────────────────────────────────────────────────
+
+export const specialistQueries = {
+  listAll: () =>
+    supabase.from('specialists').select('*').order('order_index', { ascending: true }),
+
+  listActive: () =>
+    supabase
+      .from('specialists')
+      .select('*')
+      .eq('active', true)
+      .order('order_index', { ascending: true }),
+
+  create: (data: Omit<Specialist, 'id' | 'created_at'>) =>
+    supabase.from('specialists').insert(data).select().single(),
+
+  update: (id: string, data: Partial<Omit<Specialist, 'id' | 'created_at'>>) =>
+    supabase.from('specialists').update(data).eq('id', id).select().single(),
+
+  remove: (id: string) =>
+    supabase.from('specialists').delete().eq('id', id),
 }
 
 // ─── Before / After ───────────────────────────────────────────────────────────
