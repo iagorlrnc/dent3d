@@ -6,7 +6,6 @@ import { Appointments } from "@/components/admin/Appointments"
 import { Services } from "@/components/admin/Services"
 import { Specialists } from "@/components/admin/Specialists"
 import { Gallery } from "@/components/admin/Gallery"
-import { Testimonials } from "@/components/admin/Testimonials"
 import { Messages } from "@/components/admin/Messages"
 import { SettingsPanel } from "@/components/admin/SettingsPanel"
 import { ToastContainer } from "@/components/ui/Toast"
@@ -38,8 +37,6 @@ export function AdminPanel({ onExit }: AdminPanelProps) {
         return <Specialists {...pageProps} />
       case "gallery":
         return <Gallery {...pageProps} />
-      case "testimonials":
-        return <Testimonials {...pageProps} />
       case "messages":
         return <Messages {...pageProps} />
       case "settings":

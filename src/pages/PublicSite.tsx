@@ -4,7 +4,6 @@ import { Hero }              from '@/components/public/Hero'
 import { Services }          from '@/components/public/Services'
 import { BeforeAfterSection } from '@/components/public/BeforeAfterSlider'
 import { Team }              from '@/components/public/Team'
-import { Testimonials }      from '@/components/public/Testimonials'
 import { Contact }           from '@/components/public/Contact'
 import { Footer }            from '@/components/public/Footer'
 import { ToastContainer }    from '@/components/ui/Toast'
@@ -41,7 +40,6 @@ export function PublicSite({ onAdminEnter }: PublicSiteProps) {
         <Services />
         <BeforeAfterSection />
         <Team />
-        <Testimonials />
         <Contact
           settings={settings}
           onSuccess={m => addToast(m, 'success')}

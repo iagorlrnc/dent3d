@@ -1,40 +1,36 @@
 import { useEffect, useState } from 'react'
-import { appointmentQueries, patientQueries, contactQueries, testimonialQueries } from '@/lib/queries'
+import { appointmentQueries, patientQueries, contactQueries } from '@/lib/queries'
 import type { Appointment } from '@/types'
 import { Badge } from '@/components/ui/Badge'
-import { Calendar, Users, MessageSquare, Star } from 'lucide-react'
+import { Calendar, Users, MessageSquare } from 'lucide-react'
 
 interface Stats {
   todayCount: number
   patientsCount: number
   unreadMessages: number
-  pendingTestimonials: number
 }
 
 export function Dashboard() {
   const [todayAppointments, setTodayAppointments] = useState<Appointment[]>([])
-  const [stats, setStats] = useState<Stats>({ todayCount: 0, patientsCount: 0, unreadMessages: 0, pendingTestimonials: 0 })
+  const [stats, setStats] = useState<Stats>({ todayCount: 0, patientsCount: 0, unreadMessages: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const load = async () => {
-      const [apptRes, patientsRes, messagesRes, testimonialsRes] = await Promise.all([
+      const [apptRes, patientsRes, messagesRes] = await Promise.all([
         appointmentQueries.today(),
         patientQueries.list(),
         contactQueries.list(),
-        testimonialQueries.listPending(),
       ])
       const today = apptRes.data ?? []
       const patients = patientsRes.data ?? []
       const messages = messagesRes.data ?? []
-      const testimonials = testimonialsRes.data ?? []
 
       setTodayAppointments(today)
       setStats({
         todayCount: today.length,
         patientsCount: patients.length,
         unreadMessages: messages.filter(m => !m.read).length,
-        pendingTestimonials: testimonials.length,
       })
       setLoading(false)
     }
@@ -45,7 +41,6 @@ export function Dashboard() {
     { label: 'Consultas Hoje',      value: stats.todayCount,           icon: Calendar,      color: 'border-gold' },
     { label: 'Pacientes Ativos',    value: stats.patientsCount,        icon: Users,         color: 'border-teal-clinic' },
     { label: 'Mensagens não lidas', value: stats.unreadMessages,       icon: MessageSquare, color: 'border-blue-400' },
-    { label: 'Depoimentos Pendentes', value: stats.pendingTestimonials, icon: Star,          color: 'border-amber-400' },
   ]
 
   if (loading) return (
@@ -64,7 +59,7 @@ export function Dashboard() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         {statCards.map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}

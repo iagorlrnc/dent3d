@@ -17,7 +17,6 @@ export type AdminPage =
   | "services"
   | "specialists"
   | "gallery"
-  | "testimonials"
   | "messages"
   | "settings"
 
@@ -34,7 +33,6 @@ const ITEMS: { id: AdminPage; label: string; Icon: React.ElementType }[] = [
   { id: "services", label: "Serviços", Icon: Stethoscope },
   { id: "specialists", label: "Especialistas", Icon: Users },
   { id: "gallery", label: "Galeria Antes/Depois", Icon: Images },
-  { id: "testimonials", label: "Depoimentos", Icon: MessageSquare },
   { id: "messages", label: "Mensagens", Icon: MessageSquare },
   { id: "settings", label: "Configurações", Icon: Settings },
 ]
